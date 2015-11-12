@@ -29,6 +29,11 @@ public:
     //virtual void DrawImage(const Image* image, double x, double y, uint32 frame = 0, double width = 0.0f, double height = 0.0f, double ang = 0) const;
     //virtual void DrawTiledImage(const Image* image, double x, double y, double width, double height, double offsetx = 0, double offsety = 0) const;
     //virtual void DrawText(const Font* font, const String& text, double x, double y) const;
+
+	uint32 Renderer::GenImage(uint8* buffer, uint16 width, uint16 height) const;
+	void Renderer::BindImage(uint32 glhandle) const;
+	void Renderer::DeleteImage(uint32 glhandle) const;
+
 protected:
     Renderer() {}
 private:

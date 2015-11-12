@@ -83,8 +83,10 @@
   <ItemGroup>
     <ClInclude Include="..\include\array.h" />
     <ClInclude Include="..\include\glinclude.h" />
+    <ClInclude Include="..\include\image.h" />
     <ClInclude Include="..\include\math.h" />
     <ClInclude Include="..\include\renderer.h" />
+    <ClInclude Include="..\include\resourcemanager.h" />
     <ClInclude Include="..\include\screen.h" />
     <ClInclude Include="..\include\string.h" />
     <ClInclude Include="..\include\types.h" />
@@ -92,10 +94,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\lib\stb_image.c" />
+    <ClCompile Include="..\src\image.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\math.cpp" />
     <ClCompile Include="..\src\renderer.cpp" />
+    <ClCompile Include="..\src\resourcemanager.cpp" />
     <ClCompile Include="..\src\screen.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\data\ball.png" />
+    <Image Include="..\data\soccer_npot.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

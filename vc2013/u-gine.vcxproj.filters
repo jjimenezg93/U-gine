@@ -39,6 +39,12 @@
     <ClInclude Include="..\include\u-gine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\resourcemanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp">
@@ -56,5 +62,19 @@
     <ClCompile Include="..\lib\stb_image.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\resourcemanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\data\ball.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\data\soccer_npot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
