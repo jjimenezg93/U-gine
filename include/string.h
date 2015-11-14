@@ -41,7 +41,7 @@ public:
     float ToFloat() const;
     const char* ToCString() const { return buffer; }
 
-    static String Chr(unsigned char val) { unsigned char c[] = {val, 0}; return String((char*)c); }		//se le pasa ASCII y devuelve caracter correspondiente
+    static String Chr(unsigned char val) { unsigned char c[] = {val, 0}; return String((char*)c); }
     unsigned char Asc() const { return buffer[0]; }
 
     String Left(int n) const;
@@ -58,16 +58,16 @@ public:
     String LSet(int len, const String& c) const;
     String RSet(int len, const String& c) const;
 
-    String StripExt() const;		//devuelve nombre de archivo sin extension
-    String StripDir() const;		//devuelve nombre de archivo sin ruta
-    String ExtractExt() const;		//devuelve extension de archivo
-    String ExtractDir() const;		//devuelve ruta de archivo
-    String RealPath() const;		//convierte ruta relativa a absoluta
+    String StripExt() const;
+    String StripDir() const;
+    String ExtractExt() const;
+    String ExtractDir() const;
+    String RealPath() const;
 
     static String Read(const String& filename);
     void Write(const String& filename, bool append = true) const;
 
-    Array<String> Split(const String& delim) const;		//devuelve array con delimitador delim
+    Array<String> Split(const String& delim) const;
 private:
     char* buffer;
     int length;

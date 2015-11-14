@@ -31,7 +31,7 @@ private:
     uint16 width, height;
     int32 handlex, handley;
     uint32 gltex;
-    double lastU, lastV;
+    double lastU, lastV;		//image width/buffer width, image height/buffer height
 };
 
 #endif

@@ -26,7 +26,7 @@ public:
     virtual void DrawLine(double x1, double y1, double x2, double y2) const;
     virtual void DrawRect(double x, double y, double width, double height) const;
     virtual void DrawEllipse(double x, double y, double xradius, double yradius) const;
-    //virtual void DrawImage(const Image* image, double x, double y, uint32 frame = 0, double width = 0.0f, double height = 0.0f, double ang = 0) const;
+    virtual void DrawImage(const Image* image, double x, double y, uint32 frame = 0, double width = 0.0f, double height = 0.0f, double ang = 0) const;
     //virtual void DrawTiledImage(const Image* image, double x, double y, double width, double height, double offsetx = 0, double offsety = 0) const;
     //virtual void DrawText(const Font* font, const String& text, double x, double y) const;
 

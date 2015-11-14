@@ -1,7 +1,7 @@
 #include "../include/renderer.h"
 //#include "../include/font.h"
 #include "../include/glinclude.h"
-//#include "../include/image.h"
+#include "../include/image.h"
 #include "../include/math.h"
 #include <math.h>
 
@@ -35,7 +35,6 @@ void Renderer::SetOrigin(double x, double y) const {
 }
 
 void Renderer::Clear(uint8 r, uint8 g, uint8 b) const {
-	// TAREA: Limpiar el backbuffer
 	glClearColor(r / 255.0f, g / 255.0f, b / 255.0f, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
@@ -88,13 +87,12 @@ uint32 Renderer::GenImage(uint8 * buffer, uint16 width, uint16 height) const
 	uint32 texId;
 	glGenTextures(1, &texId);
 
-	BindImage(texId);
+	Renderer::BindImage(texId);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	//call to glTexImage2D
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 
 	return texId;
 }
@@ -109,7 +107,7 @@ void Renderer::DeleteImage(uint32 glhandle) const
 	glDeleteTextures(1, &glhandle);
 }
 
-/*
+
 void Renderer::DrawImage(const Image* image, double x, double y, uint32 frame, double width, double height, double ang) const {
     if ( width == 0  ||  height == 0 ) {
         width = image->GetWidth();
@@ -142,7 +140,7 @@ void Renderer::DrawImage(const Image* image, double x, double y, uint32 frame, d
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glPopMatrix();
 }
-
+/*
 void Renderer::DrawTiledImage(const Image* image, double x, double y, double width, double height, double offsetx, double offsety) const {
 	GLdouble ubegin = offsetx / image->GetWidth();
 	GLdouble vbegin = offsety / image->GetHeight();

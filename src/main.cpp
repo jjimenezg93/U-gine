@@ -10,18 +10,29 @@
 int main(int argc, char* argv[]) {
 	Screen::Instance().Open(800, 600, false);
 	
-	Image * ball = ResourceManager::Instance().LoadImage(String("../data/ball.png"), 128, 128);
-	//ball->SetHandle(ball->GetHFrames() / 2, ball->GetVFrames() / 2);		//center
-	uint32 xCoord = Screen::Instance().GetWidth() + (ball->GetHFrames() / 2);
-	uint32 yCoord = Screen::Instance().GetHeight() + (ball->GetVFrames() / 2);
+	String filename = String("data/ball.png");
+
+	Image * ball = ResourceManager::Instance().LoadImage(filename, 1, 1);
+	ball->SetMidHandle();		//center
+
+	double rotation = 1;
+	double scale = 0;
+	short int flagScale = 1;
 
 	while ( Screen::Instance().IsOpened() && !Screen::Instance().KeyPressed(GLFW_KEY_ESC)) {
-		//update image angle and scale
+		scale += (Screen::Instance().ElapsedTime() * (2 * flagScale));
+		rotation += (Screen::Instance().ElapsedTime() * 30);
+
+		if (scale >= 5) {
+			flagScale = -1;
+		} else if (scale <= 0.5) {
+			flagScale = 1;
+		}
 
 		//clean screen and draw Image
 		Renderer::Instance().Clear();
 
-		Renderer::Instance().DrawEllipse(xCoord, yCoord, 128, 128);
+		Renderer::Instance().DrawImage(ball, Screen::Instance().GetMouseX(), Screen::Instance().GetMouseY(), 0U, scale * ball->GetWidth(), scale * ball->GetHeight(), rotation);
 
 		Screen::Instance().Refresh();
 	}

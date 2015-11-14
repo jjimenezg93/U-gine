@@ -101,10 +101,6 @@
     <ClCompile Include="..\src\resourcemanager.cpp" />
     <ClCompile Include="..\src\screen.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\data\ball.png" />
-    <Image Include="..\data\soccer_npot.png" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

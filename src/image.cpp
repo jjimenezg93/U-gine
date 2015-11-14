@@ -24,35 +24,26 @@ Image::Image(const String &filename, uint16 hframes, uint16 vframes) {
 	lastU = 1.0;
 	lastV = 1.0;
 
-	int32 width32 = 0;
-	int32 height32 = 0;
-	int32 ptrComp = 0;
-	// TAREA: Cargar el buffer de la imagen
-	uint8 *buffer = stbi_load(filename.ToCString(), &width32, &height32, &ptrComp, 4);
+	int width32 = 0;
+	int height32 = 0;
+	int *ptrComp = NULL;
 
-	//se pierde info si buffer usa más de 16 bits para el tamaño
+	uint8 *buffer = stbi_load(filename.ToCString(), &width32, &height32, ptrComp, 4);
+
 	width = static_cast<uint16>(width32);
 	height = static_cast<uint16>(height32);
 
 	// Generamos la textura
 	if ( buffer ) {
-		// TAREA: Generar la textura de OpenGL
 		this->gltex = Renderer::Instance().GenImage(buffer, width, height);
-
-		if (gltex) {
-			stbi_image_free(buffer);
-		}
-		else {
-			printf_s("Renderer::Instance().GenImage() returned 0");
-		}
+		stbi_image_free(buffer);
 	}
 }
 
 Image::~Image() {
-	glDeleteTextures(1, &gltex);
+	if (gltex != 0) Renderer::Instance().DeleteImage(this->gltex);
 }
 
 void Image::Bind() const {
-	// TAREA: Establecer la textura actual
 	Renderer::Instance().BindImage(this->gltex);
 }

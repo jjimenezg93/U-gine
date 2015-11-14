@@ -69,12 +69,4 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\data\ball.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\data\soccer_npot.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
 </Project>
