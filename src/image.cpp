@@ -66,8 +66,7 @@ Image::Image(const String &filename, uint16 hframes, uint16 vframes) {
 
 		//now, the texture is in VRAM so we no longer need it in RAM
 		stbi_image_free(bufferPO2);
-	}
-	else {
+	} else {
 		// Generamos la textura
 		if ( buffer ) {
 			this->gltex = Renderer::Instance().GenImage(buffer, width, height);
