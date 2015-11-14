@@ -10,7 +10,7 @@
 int main(int argc, char* argv[]) {
 	Screen::Instance().Open(800, 600, false);
 	
-	String filename = String("data/ball.png");
+	String filename = String("data/soccer_npot.png");
 
 	Image * ball = ResourceManager::Instance().LoadImage(filename, 1, 1);
 	ball->SetMidHandle();		//center
