@@ -10,29 +10,57 @@
 int main(int argc, char* argv[]) {
 	Screen::Instance().Open(800, 600, false);
 	
-	String filename = String("data/soccer_npot.png");
-
-	Image * ball = ResourceManager::Instance().LoadImage(filename, 1, 1);
-	ball->SetMidHandle();		//center
-
-	double rotation = 1;
-	double scale = 0;
-	short int flagScale = 1;
-
 	while ( Screen::Instance().IsOpened() && !Screen::Instance().KeyPressed(GLFW_KEY_ESC)) {
-		scale += (Screen::Instance().ElapsedTime() * (2 * flagScale));
-		rotation += (Screen::Instance().ElapsedTime() * 30);
+		Renderer::Instance().SetColor(255, 255, 255, 255);
+		Renderer::Instance().DrawRect(Screen::Instance().GetWidth() / 3, 0, Screen::Instance().GetWidth() / 3, Screen::Instance().GetHeight());
 
-		if (scale >= 5) {
-			flagScale = -1;
-		} else if (scale <= 0.5) {
-			flagScale = 1;
-		}
+		//ALPHA
+		Renderer::Instance().SetBlendMode(Renderer::BlendMode::ALPHA);
 
-		//clean screen and draw Image
-		Renderer::Instance().Clear();
+		Renderer::Instance().SetColor(255, 0, 0, 128);
+		Renderer::Instance().DrawEllipse(Screen::Instance().GetWidth() / 4, (Screen::Instance().GetHeight() / 2), 24, 24);
 
-		Renderer::Instance().DrawImage(ball, Screen::Instance().GetMouseX(), Screen::Instance().GetMouseY(), 0U, scale * ball->GetWidth(), scale * ball->GetHeight(), rotation);
+		Renderer::Instance().SetColor(0, 255, 0, 128);
+		Renderer::Instance().DrawEllipse((Screen::Instance().GetWidth() / 4) - 16, (Screen::Instance().GetHeight() / 2) + 16, 24, 24);
+
+		Renderer::Instance().SetColor(0, 0, 255, 128);
+		Renderer::Instance().DrawEllipse((Screen::Instance().GetWidth() / 4) + 16, (Screen::Instance().GetHeight() / 2) + 16, 24, 24);
+
+		//SOLID
+		Renderer::Instance().SetBlendMode(Renderer::BlendMode::SOLID);
+
+		Renderer::Instance().SetColor(255, 0, 0, 255);
+		Renderer::Instance().DrawEllipse(Screen::Instance().GetWidth() / 2, (Screen::Instance().GetHeight() / 4), 24, 24);
+
+		Renderer::Instance().SetColor(0, 255, 0, 255);
+		Renderer::Instance().DrawEllipse((Screen::Instance().GetWidth() / 2) - 16, (Screen::Instance().GetHeight() / 4) + 16, 24, 24);
+
+		Renderer::Instance().SetColor(0, 0, 255, 255);
+		Renderer::Instance().DrawEllipse((Screen::Instance().GetWidth() / 2) + 16, (Screen::Instance().GetHeight() / 4) + 16, 24, 24);
+
+		//MULTIPLICATIVE
+		Renderer::Instance().SetBlendMode(Renderer::BlendMode::MULTIPLICATIVE);
+
+		Renderer::Instance().SetColor(255, 0, 0, 255);
+		Renderer::Instance().DrawEllipse(Screen::Instance().GetWidth() / 2, (Screen::Instance().GetHeight() / 2), 24, 24);
+
+		Renderer::Instance().SetColor(0, 255, 0, 255);
+		Renderer::Instance().DrawEllipse((Screen::Instance().GetWidth() / 2) - 16, (Screen::Instance().GetHeight() / 2) + 16, 24, 24);
+
+		Renderer::Instance().SetColor(0, 0, 255, 255);
+		Renderer::Instance().DrawEllipse((Screen::Instance().GetWidth() / 2) + 16, (Screen::Instance().GetHeight() / 2) + 16, 24, 24);
+
+		//ADDITIVE
+		Renderer::Instance().SetBlendMode(Renderer::BlendMode::ADDITIVE);
+
+		Renderer::Instance().SetColor(255, 0, 0, 255);
+		Renderer::Instance().DrawEllipse(Screen::Instance().GetWidth() * 3 / 4, (Screen::Instance().GetHeight() / 2), 24, 24);
+
+		Renderer::Instance().SetColor(0, 255, 0, 255);
+		Renderer::Instance().DrawEllipse((Screen::Instance().GetWidth() * 3 / 4) - 16, (Screen::Instance().GetHeight() / 2) + 16, 24, 24);
+
+		Renderer::Instance().SetColor(0, 0, 255, 255);
+		Renderer::Instance().DrawEllipse((Screen::Instance().GetWidth() * 3 / 4) + 16, (Screen::Instance().GetHeight() / 2) + 16, 24, 24);
 
 		Screen::Instance().Refresh();
 	}
