@@ -50,7 +50,7 @@
     <ClCompile>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -63,7 +63,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
@@ -88,6 +88,7 @@
     <ClInclude Include="..\include\renderer.h" />
     <ClInclude Include="..\include\resourcemanager.h" />
     <ClInclude Include="..\include\screen.h" />
+    <ClInclude Include="..\include\sprite.h" />
     <ClInclude Include="..\include\string.h" />
     <ClInclude Include="..\include\types.h" />
     <ClInclude Include="..\include\u-gine.h" />
@@ -100,6 +101,7 @@
     <ClCompile Include="..\src\renderer.cpp" />
     <ClCompile Include="..\src\resourcemanager.cpp" />
     <ClCompile Include="..\src\screen.cpp" />
+    <ClCompile Include="..\src\sprite.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

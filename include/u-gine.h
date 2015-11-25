@@ -22,7 +22,7 @@
 //#include "scene.h"
 #include "screen.h"
 //#include "skeletonsprite.h"
-//#include "sprite.h"
+#include "sprite.h"
 #include "string.h"
 #include "types.h"
 
