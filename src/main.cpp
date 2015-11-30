@@ -40,47 +40,44 @@ int main(int argc, char* argv[]) {
 	srand(time(NULL));
 	Screen::Instance().Open(800, 600, false);
 
-	String boxFile = String("data/box.jpg");
-	Image * box = ResourceManager::Instance().LoadImage(boxFile, 1, 1);
+	String alienFile = String("data/alien.png");
+	Image * alien = ResourceManager::Instance().LoadImage(alienFile, 1, 1);
+	alien->SetMidHandle();
 
-	String ballFile = String("data/ball.png");
-	Image * ball = ResourceManager::Instance().LoadImage(ballFile, 1, 1);
+	Sprite * alienSprite = new Sprite(alien);
+	//alienSprite->SetPosition(Screen::Instance().GetWidth() / 2, Screen::Instance().GetHeight() / 2);
+	alienSprite->SetPosition(0, 0);
+	alienSprite->SetUserData(new SpriteSpeed(genRandomF(), genRandomF()));
 
-	String soccerBallFile = String("data/soccer_npot.png");
-	Image * soccerBall = ResourceManager::Instance().LoadImage(soccerBallFile, 1, 1);
-
-	Sprite * boxSprite = new Sprite(box);
-	boxSprite->SetPosition(Screen::Instance().GetWidth() / 2, Screen::Instance().GetHeight() / 2);
-	boxSprite->SetUserData(new SpriteSpeed(genRandomF(), genRandomF()));
-
-	Sprite * ballSprite = new Sprite(ball);
-	ballSprite->SetPosition(Screen::Instance().GetWidth() / 2, Screen::Instance().GetHeight() / 2);
-	ballSprite->SetUserData(new SpriteSpeed(genRandomF(), genRandomF()));
-
-	Sprite * soccerBallSprite = new Sprite(soccerBall);
-	soccerBallSprite->SetPosition(Screen::Instance().GetWidth() / 2, Screen::Instance().GetHeight() / 2);
-	soccerBallSprite->SetUserData(new SpriteSpeed(genRandomF(), genRandomF()));
-
-	Sprite * sprites[] = { boxSprite, ballSprite, soccerBallSprite };
+	Sprite * sprites[] = { alienSprite };
 
 	while (Screen::Instance().IsOpened() && !Screen::Instance().KeyPressed(GLFW_KEY_ESC)) {
 		Renderer::Instance().Clear();
-		
+
 		for (unsigned short int i = 0; i < sizeof(sprites) / sizeof(sprites[0]); i++) {
-			checkAndUpdateSpriteDirection(sprites[i]);
-			sprites[i]->SetPosition(sprites[i]->GetX() + ((SpriteSpeed *)(sprites[i]->GetUserData()))->getSSX(), sprites[i]->GetY() + ((SpriteSpeed *)(sprites[i]->GetUserData()))->getSSY());
+			//checkAndUpdateSpriteDirection(sprites[i]);
+			//sprites[i]->SetPosition(sprites[i]->GetX() + ((SpriteSpeed *)(sprites[i]->GetUserData()))->getSSX(), sprites[i]->GetY() + ((SpriteSpeed *)(sprites[i]->GetUserData()))->getSSY());
 			sprites[i]->Render();
+
+			//move
+			if (!sprites[i]->IsMoving()) {
+				sprites[i]->MoveTo(Screen::Instance().GetWidth() - alien->GetWidth(), Screen::Instance().GetHeight() - alien->GetHeight(), 0.1);
+				//sprites[i]->MoveTo(600, 380, 3);
+			}
+
+			//rotation
+			if (!sprites[i]->IsRotating() /*&& sprites[i]->IsMoving()*/) {
+				sprites[i]->RotateTo(180, 45);
+			}
+
+			sprites[i]->Update(Screen::Instance().ElapsedTime());
 		}
 
 		Screen::Instance().Refresh();
 	}
 
-	delete box;
-	delete ball;
-	delete soccerBall;
+	delete alien;
 
-	delete boxSprite;
-	delete ballSprite;
-	delete soccerBallSprite;
+	delete alienSprite;
 	return 0;
 }
