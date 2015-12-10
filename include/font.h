@@ -7,7 +7,7 @@
 
 class Font : public Image {
 public:
-	Font(const String &filename) : Image(filename, 16, 16) {}
+	Font(const String &filename);
 
 	virtual uint16 GetSize() const;
 	virtual uint32 GetTextWidth(const String &text) const;

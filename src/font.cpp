@@ -1,12 +1,19 @@
 #include "..\include\font.h"
 #include "..\include\renderer.h"
 
+Font::Font(const String &filename) : Image(filename, 16, 16) {
+	this->x = 0;
+	this->y = 0;
+	this->speedX = 0;
+	this->speedY = 0;
+}
+
 uint16 Font::GetSize() const {
 	return this->GetHeight();
 }
 
 uint32 Font::GetTextWidth(const String & text) const {
-	return this->GetWidth() * this->GetHFrames() * this->GetVFrames();
+	return this->GetWidth() * text.Length();
 }
 
 uint32 Font::GetTextHeight(const String & text) const {
