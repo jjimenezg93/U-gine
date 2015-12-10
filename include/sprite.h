@@ -45,7 +45,7 @@ public:
 
 	virtual void SetFPS(int16 fps) { this->animFPS = fps; }
 	virtual int16 GetFPS() const { return this->animFPS; }
-	virtual void SetFrameRange(uint16 firstFrame, uint16 lastFrame) { this->firstFrame = firstFrame; this->lastFrame = lastFrame; }
+	virtual void SetFrameRange(uint16 firstFrame, uint16 lastFrame) { this->firstFrame = firstFrame; this->lastFrame = lastFrame; this->currentFrame = firstFrame; }
 	virtual uint16 GetFirstFrame() const { return this->firstFrame; }
 	virtual uint16 GetLastFrame() { return this->lastFrame; }
 	virtual void SetCurrentFrame(uint16 frame) { this->currentFrame = frame; }

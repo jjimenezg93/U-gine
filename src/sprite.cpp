@@ -10,7 +10,6 @@
 #include <math.h>
 
 Sprite::Sprite(Image* image) {
-	// TAREA: Implementar
 	this->image = image;
 	this->x = 0;
 	this->y = 0;
@@ -26,7 +25,7 @@ Sprite::Sprite(Image* image) {
 	this->animFPS = 0;
 	this->firstFrame = 0;
 	this->lastFrame = 1;
-	this->currentFrame = 0;
+	this->currentFrame = this->firstFrame;
 	this->blendMode = Renderer::BlendMode::ALPHA;
 	this->r = 255;
 	this->g = 255;
@@ -78,29 +77,30 @@ void Sprite::RotateTo(int32 angle, double speed) {
 		this->rotating = false;
 	else {
 		this->rotating = true;
-		double ccw = WrapValue(this->angle - wrapAngle, 360);
-		double cw = WrapValue(wrapAngle - this->angle, 360);
+		double cw = WrapValue(this->angle - wrapAngle, 360);
+		double ccw = WrapValue(wrapAngle - this->angle, 360);
 		if (min(ccw, cw) == ccw) {
 			this->degreesToRotate = ccw;
+			this->toAngle = wrapAngle;
 			this->rotatingSpeed = abs(speed);
 		} else {
 			this->degreesToRotate = cw;
+			this->toAngle = wrapAngle;
 			this->rotatingSpeed = -abs(speed);
 		}
 	}
 }
 
 void Sprite::MoveTo(double x, double y, double speed) {
-	this->toY = y;
-	this->toX = x;
-	if (this->toX == this->x || this->toY == this->y/*
-													|| this->toX <= 0 || this->toY <= 0 || this->toX > Screen::Instance().GetWidth() || this->toY > Screen::Instance().GetHeight()*/) {
+	if (x == round(this->x) && y == round(this->y) || speed == 0) {
 		this->moving = false;
 	} else {
+		this->toX = x;
+		this->toY = y;
 		this->moving = true;
-		double time = sqrt(x * x + y * y) / speed;
-		this->movingSpeedX = x / time;
-		this->movingSpeedY = y / time;
+		double time = sqrt(pow(this->toX - this->x, 2) + pow(this->toY - this->y, 2)) / speed;
+		this->movingSpeedX = (this->toX - this->x) / time;
+		this->movingSpeedY = (this->toY - this->y) / time;
 	}
 }
 
@@ -109,17 +109,54 @@ void Sprite::Update(double elapsed, const Map* map) {
 	colSprite = NULL;
 	collided = false;
 
-	// TAREA: Actualizar animacion
+	this->currentFrame += this->animFPS * elapsed;
+	
+	if (this->currentFrame >= this->lastFrame) {
+		this->currentFrame = this->firstFrame;
+	}
+
+	if (this->currentFrame < this->firstFrame) {
+		this->currentFrame = this->lastFrame;
+	}
 
 	//rotation update
-	double r = rotatingSpeed * elapsed;
-	degreesToRotate -= r;
-	SetAngle(this->GetAngle() + r);
+	if (this->rotating == true) {
+		double r = rotatingSpeed * elapsed;
+		degreesToRotate -= abs(r);
+		SetAngle(this->GetAngle() + r);
+
+		if (this->degreesToRotate <= 0) {
+			this->rotating = false;
+			SetAngle(toAngle);
+		}
+	}
 
 	//move update
-	double moveX = this->x + (this->movingSpeedX * elapsed);
-	double moveY = this->y + (this->movingSpeedY * elapsed);
-	this->SetPosition(moveX, moveY);
+	if (this->moving == true) {
+		double moveX = this->x + (this->movingSpeedX * elapsed);
+		double moveY = this->y + (this->movingSpeedY * elapsed);
+		this->SetPosition(moveX, moveY);
+
+		if (this->movingSpeedX <= 0 && this->x <= this->toX) {
+			this->moving = false;
+			this->x = this->toX;
+			this->y = this->toY;
+		} else if (this->movingSpeedX >= 0 && this->x >= this->toX) {
+			this->moving = false;
+			this->x = this->toX;
+			this->y = this->toY;
+		}
+
+		if (this->movingSpeedY <= 0 && this->y <= this->toY) {
+			this->moving = false;
+			this->x = this->toX;
+			this->y = this->toY;
+		} else if (this->movingSpeedY >= 0 && this->y >= this->toY) {
+			this->moving = false;
+			this->x = this->toX;
+			this->y = this->toY;
+		}
+	}
 
 	// Informacion final de colision
 	UpdateCollisionBox();
@@ -130,7 +167,7 @@ void Sprite::Render() const {
 
 	Renderer::Instance().SetColor(this->r, this->g, this->b, this->a);
 
-	Renderer::Instance().DrawImage(this->image, this->x, this->y, 0U, this->colwidth, this->colheight, this->angle);
+	Renderer::Instance().DrawImage(this->image, this->x, this->y, this->currentFrame, this->image->GetWidth() * scalex, this->image->GetHeight() * scaley, this->angle);
 }
 
 void Sprite::UpdateCollisionBox() {
