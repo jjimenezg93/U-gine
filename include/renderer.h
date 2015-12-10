@@ -30,9 +30,15 @@ public:
     //virtual void DrawTiledImage(const Image* image, double x, double y, double width, double height, double offsetx = 0, double offsety = 0) const;
     //virtual void DrawText(const Font* font, const String& text, double x, double y) const;
 
-	uint32 Renderer::GenImage(uint8* buffer, uint16 width, uint16 height) const;
-	void Renderer::BindImage(uint32 glhandle) const;
-	void Renderer::DeleteImage(uint32 glhandle) const;
+	uint32 GenImage(uint8* buffer, uint16 width, uint16 height) const;
+	void BindImage(uint32 glhandle) const;
+	void DeleteImage(uint32 glhandle) const;
+
+	virtual void PushMatrix() const;
+	void PopMatrix() const;
+	void TranslateMatrix(double x, double y, double z) const;
+	void RotateMatrix(double rotation, double x, double y, double z) const;
+	void ScaleMatrix(double x, double y, double z) const;
 
 protected:
     Renderer() {}

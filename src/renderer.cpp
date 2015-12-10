@@ -162,3 +162,23 @@ void Renderer::DrawText(const Font* font, const String &text, double x, double y
 	font->Render(text, x, y);
 }
 */
+
+void Renderer::PushMatrix() const {
+	glPushMatrix();
+}
+
+void Renderer::PopMatrix() const {
+	glPopMatrix();
+}
+
+void Renderer::TranslateMatrix(double x, double y, double z) const {
+	glTranslated(x, y, z);
+}
+
+void Renderer::RotateMatrix(double rotation, double x, double y, double z) const {
+	glRotated(rotation, x, y, z);
+}
+
+void Renderer::ScaleMatrix(double x, double y, double z) const {
+	glScaled(x, y, z);
+}

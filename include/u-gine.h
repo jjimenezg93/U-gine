@@ -2,7 +2,7 @@
 #define UGINE_MAIN_H
 
 #include "array.h"
-//#include "bone.h"
+#include "bone.h"
 //#include "camera.h"
 //#include "collisionpixeldata.h"
 //#include "emitter.h"
@@ -21,7 +21,7 @@
 #include "resourcemanager.h"
 //#include "scene.h"
 #include "screen.h"
-//#include "skeletonsprite.h"
+#include "skeletonsprite.h"
 #include "sprite.h"
 #include "string.h"
 #include "types.h"
