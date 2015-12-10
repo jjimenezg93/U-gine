@@ -6,7 +6,7 @@
 //#include "camera.h"
 //#include "collisionpixeldata.h"
 //#include "emitter.h"
-//#include "font.h"
+#include "font.h"
 #include "glinclude.h"
 #include "image.h"
 //#include "isometricmap.h"
