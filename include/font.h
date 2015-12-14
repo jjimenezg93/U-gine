@@ -1,8 +1,9 @@
 #ifndef UGINE_FONT_H
 #define UGINE_FONT_H
 
+#include "glyph.h"
 #include "image.h"
-#include "string.h"
+#include "string.h"		//includes array.h
 #include "types.h"
 
 class Font : public Image {
@@ -22,10 +23,12 @@ public:
 	virtual void SetSpeedX(double speedX) { this->speedX = speedX; }
 	virtual void SetSpeedY(double speedY) { this->speedY = speedY; }
 
-	virtual void Render(const String &text, double x, double y);
+	virtual void Render(const String &text, double x, double y) const;
 private:
 	float x, y;
 	double speedX, speedY;
+
+	Array<Glyph> glyphs;
 };
 
 #endif
