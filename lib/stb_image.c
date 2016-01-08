@@ -550,7 +550,7 @@ static unsigned char *stbi_load_main(stbi *s, int *x, int *y, int *comp, int req
    // test tga last because it's a crappy test!
    if (stbi_tga_test(s))
       return stbi_tga_load(s,x,y,comp,req_comp);
-   return epuc("unknown image type", "Image not of any known type, or corrupt");
+   return epuc("unknown m_image type", "Image not of any known type, or corrupt");
 }
 
 #ifndef STBI_NO_STDIO
@@ -598,7 +598,7 @@ float *stbi_loadf_main(stbi *s, int *x, int *y, int *comp, int req_comp)
    data = stbi_load_main(s, x, y, comp, req_comp);
    if (data)
       return ldr_to_hdr(data, *x, *y, req_comp ? req_comp : *comp);
-   return epf("unknown image type", "Image not of any known type, or corrupt");
+   return epf("unknown m_image type", "Image not of any known type, or corrupt");
 }
 
 float *stbi_loadf_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *comp, int req_comp)
@@ -2702,15 +2702,15 @@ static int parse_png_file(png *z, int scan, int req_comp)
             if (!first) return e("multiple IHDR","Corrupt PNG");
             first = 0;
             if (c.length != 13) return e("bad IHDR len","Corrupt PNG");
-            s->img_x = get32(s); if (s->img_x > (1 << 24)) return e("too large","Very large image (corrupt?)");
-            s->img_y = get32(s); if (s->img_y > (1 << 24)) return e("too large","Very large image (corrupt?)");
+            s->img_x = get32(s); if (s->img_x > (1 << 24)) return e("too large","Very large m_image (corrupt?)");
+            s->img_y = get32(s); if (s->img_y > (1 << 24)) return e("too large","Very large m_image (corrupt?)");
             depth = get8(s);  if (depth != 8)        return e("8bit only","PNG not supported: 8-bit only");
             color = get8(s);  if (color > 6)         return e("bad ctype","Corrupt PNG");
             if (color == 3) pal_img_n = 3; else if (color & 1) return e("bad ctype","Corrupt PNG");
             comp  = get8(s);  if (comp) return e("bad comp method","Corrupt PNG");
             filter= get8(s);  if (filter) return e("bad filter method","Corrupt PNG");
             interlace = get8(s); if (interlace>1) return e("bad interlace method","Corrupt PNG");
-            if (!s->img_x || !s->img_y) return e("0-pixel image","Corrupt PNG");
+            if (!s->img_x || !s->img_y) return e("0-pixel m_image","Corrupt PNG");
             if (!pal_img_n) {
                s->img_n = (color & 2 ? 3 : 1) + (color & 4 ? 1 : 0);
                if ((1 << 30) / s->img_x / s->img_n < s->img_y) return e("too large", "Image too large to decode");
@@ -3479,11 +3479,11 @@ static stbi_uc *psd_load(stbi *s, int *x, int *y, int *comp, int req_comp)
 
    // Check identifier
    if (get32(s) != 0x38425053)   // "8BPS"
-      return epuc("not PSD", "Corrupt PSD image");
+      return epuc("not PSD", "Corrupt PSD m_image");
 
    // Check file type version.
    if (get16(s) != 1)
-      return epuc("wrong version", "Unsupported version of PSD image");
+      return epuc("wrong version", "Unsupported version of PSD m_image");
 
    // Skip 6 reserved bytes.
    skip(s, 6 );
@@ -3491,7 +3491,7 @@ static stbi_uc *psd_load(stbi *s, int *x, int *y, int *comp, int req_comp)
    // Read the number of channels (R, G, B, A, etc).
    channelCount = get16(s);
    if (channelCount < 0 || channelCount > 16)
-      return epuc("wrong channel count", "Unsupported number of channels in PSD image");
+      return epuc("wrong channel count", "Unsupported number of channels in PSD m_image");
 
    // Read the rows and columns of the image.
    h = get32(s);
@@ -4277,7 +4277,7 @@ static float *hdr_load(stbi *s, int *x, int *y, int *comp, int req_comp)
 
    // Check identifier
    if (strcmp(hdr_gettoken(s,buffer), "#?RADIANCE") != 0)
-      return epf("not HDR", "Corrupt HDR image");
+      return epf("not HDR", "Corrupt HDR m_image");
    
    // Parse header
    for(;;) {
@@ -4543,7 +4543,7 @@ static int stbi_info_main(stbi *s, int *x, int *y, int *comp)
    // test tga last because it's a crappy test!
    if (stbi_tga_info(s, x, y, comp))
        return 1;
-   return e("unknown image type", "Image not of any known type, or corrupt");
+   return e("unknown m_image type", "Image not of any known type, or corrupt");
 }
 
 #ifndef STBI_NO_STDIO

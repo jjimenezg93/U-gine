@@ -3,7 +3,7 @@
 
 #include "array.h"
 #include "bone.h"
-//#include "camera.h"
+#include "camera.h"
 //#include "collisionpixeldata.h"
 //#include "emitter.h"
 #include "font.h"
@@ -19,7 +19,7 @@
 //#include "particle.h"
 #include "renderer.h"
 #include "resourcemanager.h"
-//#include "scene.h"
+#include "scene.h"
 #include "screen.h"
 #include "skeletonsprite.h"
 #include "sprite.h"

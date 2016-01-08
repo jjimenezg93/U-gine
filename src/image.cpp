@@ -13,16 +13,16 @@ extern "C" {
 }
 
 Image::Image(const String &filename, uint16 hframes, uint16 vframes) {
-	this->filename = filename;
-	this->hframes = hframes;
-	this->vframes = vframes;
-	width = 0;
-	height = 0;
-	handlex = 0;
-	handley = 0;
-	gltex = 0;
-	lastU = 1.0;
-	lastV = 1.0;
+	m_filename = filename;
+	m_hframes = hframes;
+	m_vframes = vframes;
+	m_width = 0;
+	m_height = 0;
+	m_handlex = 0;
+	m_handley = 0;
+	m_gltex = 0;
+	m_lastU = 1.0;
+	m_lastV = 1.0;
 
 	int width32 = 0;
 	int height32 = 0;
@@ -30,16 +30,16 @@ Image::Image(const String &filename, uint16 hframes, uint16 vframes) {
 
 	uint8 *buffer = stbi_load(filename.ToCString(), &width32, &height32, ptrComp, 4);
 
-	width = static_cast<uint16>(width32);
-	height = static_cast<uint16>(height32);
+	m_width = static_cast<uint16>(width32);
+	m_height = static_cast<uint16>(height32);
 
 	//PO2 -> Power of 2
-	double widthPO2 = pow(2, ceil(Log2(width)));
-	double heightPO2 = pow(2, ceil(Log2(height)));
+	double widthPO2 = pow(2, ceil(Log2(m_width)));
+	double heightPO2 = pow(2, ceil(Log2(m_height)));
 
-	if (widthPO2 != width || heightPO2 != height) {
-		lastU = static_cast<double>(width / widthPO2);
-		lastV = static_cast<double>(height / heightPO2);
+	if (widthPO2 != m_width || heightPO2 != m_height) {
+		m_lastU = static_cast<double>(m_width / widthPO2);
+		m_lastV = static_cast<double>(m_height / heightPO2);
 
 		widthPO2 = static_cast<uint16>(widthPO2);
 		heightPO2 = static_cast<uint16>(heightPO2);
@@ -53,17 +53,17 @@ Image::Image(const String &filename, uint16 hframes, uint16 vframes) {
 		//setting pixels to white -> as texture has transparent pixels, check everything is working properly
 		memset(bufferPO2, 0, widthPO2 * heightPO2 * 4);
 
-		for (unsigned int h = 0; h < height; h++) {
-			memcpy(bufferPO2, buffer, width * 4);
+		for (unsigned int h = 0; h < m_height; h++) {
+			memcpy(bufferPO2, buffer, m_width * 4);
 			bufferPO2 += static_cast<int>(widthPO2) * 4;
-			buffer += (width * 4);
+			buffer += (m_width * 4);
 		}
 
 		bufferPO2 = origBufferPO2pos;
 		buffer = origBufferpos;
 
 		//call to genImage, creating texture in VRAM
-		this->gltex = Renderer::Instance().GenImage(bufferPO2, widthPO2, heightPO2);
+		m_gltex = Renderer::Instance().GenImage(bufferPO2, widthPO2, heightPO2);
 
 		//now, the texture is in VRAM so we no longer need it in RAM
 		stbi_image_free(bufferPO2);
@@ -73,16 +73,16 @@ Image::Image(const String &filename, uint16 hframes, uint16 vframes) {
 	} else {
 		// Generamos la textura
 		if (buffer) {
-			this->gltex = Renderer::Instance().GenImage(buffer, width, height);
+			m_gltex = Renderer::Instance().GenImage(buffer, m_width, m_height);
 			stbi_image_free(buffer);
 		}
 	}
 }
 
 Image::~Image() {
-	if (gltex != 0) Renderer::Instance().DeleteImage(this->gltex);
+	if (m_gltex != 0) Renderer::Instance().DeleteImage(m_gltex);
 }
 
 void Image::Bind() const {
-	Renderer::Instance().BindImage(this->gltex);
+	Renderer::Instance().BindImage(m_gltex);
 }
