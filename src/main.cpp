@@ -7,8 +7,6 @@
 
 #include "../include/u-gine.h"
 
-#define SPEED 10
-
 float genRandomF(double min, double max) {
 	return ((float(rand()) / float(RAND_MAX)) * (max - min) + min);
 }
@@ -16,43 +14,51 @@ float genRandomF(double min, double max) {
 int main(int argc, char* argv[]) {
 	Screen::Instance().Open(800, 600, false);
 
-	String alienFile = String("data/alien.png");
-	String backgroundFile = String("data/background.png");
+	Image * starImage = ResourceManager::Instance().LoadImage("data/star.png");
+	starImage->SetMidHandle();
 
-	Image *imgSprite = ResourceManager::Instance().LoadImage(alienFile, 1, 1);
-	imgSprite->SetMidHandle();
-	Image *background = ResourceManager::Instance().LoadImage(backgroundFile, 1, 1);
+	Scene * mainScene = new Scene();
 
-	Scene *mainScene = new Scene(background);
-	mainScene->SetBackgroundColor(0, 0, 255);
+	Emitter * em = mainScene->CreateEmitter(starImage, true);
 
-	Sprite *sprt = mainScene->CreateSprite(imgSprite);
-	sprt->SetPosition(Screen::Instance().GetWidth() / 2, Screen::Instance().GetHeight() / 2);
+	Sprite * sprtStar = mainScene->CreateSprite(starImage, Scene::LAYER_FRONT);
+	sprtStar->SetColor(255, 0, 0, 255);
+	sprtStar->SetBlendMode(Renderer::BlendMode::ALPHA);
+	
+	em->SetRate(500, 1000);
+	em->SetVelocityX(-128, 128);
+	em->SetVelocityY(-128, 128);
+	em->SetAngularVelocity(0, 360);
+	em->SetLifetime(1, 2);
+	em->SetMinColor(0, 0, 0);
+	em->SetMaxColor(255, 255, 255);
 
-	(mainScene->GetCamera()).SetBounds(0, 0, background->GetWidth(), background->GetHeight());
-	(mainScene->GetCamera()).FollowSprite(sprt);
+	double keyDelay = 0;
 
 	while (Screen::Instance().IsOpened() && !Screen::Instance().KeyPressed(GLFW_KEY_ESC)) {
 		Renderer::Instance().Clear();
 
-		if (Screen::Instance().KeyPressed(GLFW_KEY_LEFT) && sprt->GetX() > sprt->GetImage()->GetWidth() / 2)
-			sprt->SetX(sprt->GetX() - SPEED);
-		if (Screen::Instance().KeyPressed(GLFW_KEY_RIGHT) && sprt->GetX() <= (mainScene->GetCamera()).GetMaxX() - (sprt->GetImage()->GetWidth() / 2))
-			sprt->SetX(sprt->GetX() + SPEED);
-		if (Screen::Instance().KeyPressed(GLFW_KEY_UP) && sprt->GetY() > sprt->GetImage()->GetHeight() / 2)
-			sprt->SetY(sprt->GetY() - SPEED);
-		if (Screen::Instance().KeyPressed(GLFW_KEY_DOWN) && sprt->GetY() <= (mainScene->GetCamera()).GetMaxY() - (sprt->GetImage()->GetHeight() / 2))
-			sprt->SetY(sprt->GetY() + SPEED);
+		if (Screen::Instance().MouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT) && !em->IsEmitting() && keyDelay >= 0.5) {
+			em->Start();
+			keyDelay = 0;
+		} else if (Screen::Instance().MouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT) && em->IsEmitting() && keyDelay >= 0.5) {
+			em->Stop();
+			keyDelay = 0;
+		}
+
+		sprtStar->SetPosition(Screen::Instance().GetMouseX(), Screen::Instance().GetMouseY());
+		em->SetPosition(Screen::Instance().GetMouseX(), Screen::Instance().GetMouseY());
 
 		mainScene->Update(Screen::Instance().ElapsedTime());
-		
 		mainScene->Render();
+
+		keyDelay += Screen::Instance().ElapsedTime();
+
 		Screen::Instance().Refresh();
 	}
-
+	
+	//image
 	ResourceManager::Instance().FreeResources();
-
-	delete mainScene;
 
 	return 0;
 }

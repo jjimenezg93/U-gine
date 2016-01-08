@@ -31,8 +31,8 @@ public:
 	virtual Sprite* CreateSprite(Image* image, Layer layer = LAYER_BACK);
     virtual void DeleteSprite(Sprite* sprite);
 
-    //virtual Emitter* CreateEmitter(Image* image, bool autofade, Layer layer = LAYER_MIDDLE);
-    //virtual void DeleteEmitter(Emitter* emitter);
+    virtual Emitter* CreateEmitter(Image* image, bool autofade, Layer layer = LAYER_MIDDLE);
+    virtual void DeleteEmitter(Emitter* emitter);
 
     virtual void Update(double elapsed, Map* map = 0);
     virtual void Render() const;
@@ -40,7 +40,7 @@ protected:
     virtual void RenderBackground() const {}
     virtual void RenderAfterBackground() const {}
     virtual void RenderSprites(Layer layer) const;
-    //virtual void RenderEmitters(Layer layer) const;
+    virtual void RenderEmitters(Layer layer) const;
     virtual void AddSprite(Sprite* sprite, Layer layer) { sprites[layer].Add(sprite); }
     virtual const Array<Sprite*>& GetSprites(Layer layer) const { return sprites[layer]; }
     virtual Array<Sprite*>& GetSprites(Layer layer) { return sprites[layer]; }
@@ -50,7 +50,7 @@ private:
     Image* backgroundImg;
 
     Array<Sprite*> sprites[LAYER_COUNT];
-    //Array<Emitter*> emitters[LAYER_COUNT];
+    Array<Emitter*> emitters[LAYER_COUNT];
 };
 
 #endif
