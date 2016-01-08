@@ -1,5 +1,5 @@
 #include "../include/renderer.h"
-//#include "../include/font.h"
+#include "../include/font.h"
 #include "../include/glinclude.h"
 #include "../include/image.h"
 #include "../include/math.h"
@@ -31,7 +31,9 @@ void Renderer::SetColor(uint8 r, uint8 g, uint8 b, uint8 a) const {
 }
 
 void Renderer::SetOrigin(double x, double y) const {
-	// TAREA: Configurar matriz de modelado
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glTranslated(-x, -y, 0);
 }
 
 void Renderer::Clear(uint8 r, uint8 g, uint8 b) const {
@@ -97,6 +99,11 @@ uint32 Renderer::GenImage(uint8 * buffer, uint16 width, uint16 height) const
 	return texId;
 }
 
+void Renderer::GenFontImage(uint8 * buffer, uint16 width, uint16 height) const
+{
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+}
+
 void Renderer::BindImage(uint32 glhandle) const
 {
 	glBindTexture(GL_TEXTURE_2D, glhandle);
@@ -157,11 +164,10 @@ void Renderer::DrawTiledImage(const Image* image, double x, double y, double wid
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glPopMatrix();
 }
-
+*/
 void Renderer::DrawText(const Font* font, const String &text, double x, double y) const {
 	font->Render(text, x, y);
 }
-*/
 
 void Renderer::PushMatrix() const {
 	glPushMatrix();

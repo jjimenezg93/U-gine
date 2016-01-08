@@ -171,7 +171,7 @@ inline String String::FromInt(int val) {
 
 inline String String::HexFromInt(int val) {
     char buf[32];
-    sprintf(buf, "%x", val);
+    sprintf(buf, "%m_x", val);
     return String(buf);
 }
 

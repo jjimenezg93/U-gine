@@ -9,29 +9,29 @@ public:
     Image(const String& filename, uint16 hframes = 1, uint16 vframes = 1);
 	virtual ~Image();
 
-    virtual bool IsValid() const { return gltex != 0; }
-    virtual const String& GetFilename() const { return filename; }
-    virtual uint32 GetNumFrames() const { return hframes * vframes; }
-    virtual uint16 GetHFrames() const { return hframes; }
-    virtual uint16 GetVFrames() const { return vframes; }
-    virtual uint16 GetWidth() const { return width / hframes; }
-    virtual uint16 GetHeight() const { return height / vframes; }
-    virtual void SetHandle(int32 handlex, int32 handley) { this->handlex = handlex; this->handley = handley; }
+    virtual bool IsValid() const { return m_gltex != 0; }
+    virtual const String& GetFilename() const { return m_filename; }
+    virtual uint32 GetNumFrames() const { return m_hframes * m_vframes; }
+    virtual uint16 GetHFrames() const { return m_hframes; }
+    virtual uint16 GetVFrames() const { return m_vframes; }
+    virtual uint16 GetWidth() const { return m_width / m_hframes; }
+    virtual uint16 GetHeight() const { return m_height / m_vframes; }
+    virtual void SetHandle(int32 handlex, int32 handley) { m_handlex = handlex; m_handley = handley; }
     virtual void SetMidHandle() { SetHandle(GetWidth()/2, GetHeight()/2); }
-    virtual int32 GetHandleX() const { return handlex; }
-    virtual int32 GetHandleY() const { return handley; }
+    virtual int32 GetHandleX() const { return m_handlex; }
+    virtual int32 GetHandleY() const { return m_handley; }
     virtual void Bind() const;
-    virtual double GetLastU() const { return lastU; }
-    virtual double GetLastV() const { return lastV; }
+    virtual double GetLastU() const { return m_lastU; }
+    virtual double GetLastV() const { return m_lastV; }
 protected:
-    virtual uint32 GetTexId() const { return gltex; }
+    virtual uint32 GetTexId() const { return m_gltex; }
 private:
-    String filename;
-    uint16 hframes, vframes;
-    uint16 width, height;
-    int32 handlex, handley;
-    uint32 gltex;
-    double lastU, lastV;		//image width/buffer width, image height/buffer height
+    String m_filename;
+    uint16 m_hframes, m_vframes;
+    uint16 m_width, m_height;
+    int32 m_handlex, m_handley;
+    uint32 m_gltex;
+    double m_lastU, m_lastV;		//image width/buffer width, image height/buffer height
 };
 
 #endif

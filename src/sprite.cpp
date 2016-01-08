@@ -10,46 +10,46 @@
 #include <math.h>
 
 Sprite::Sprite(Image* image) {
-	this->image = image;
-	this->x = 0;
-	this->y = 0;
-	this->z = 0;
-	this->colx = 0;
-	this->coly = 0;
-	this->colwidth = 0;
-	this->colheight = 0;
-	this->angle = 0;
-	this->scalex = 1;
-	this->scaley = 1;
-	this->radius = 1;
-	this->animFPS = 0;
-	this->firstFrame = 0;
-	this->lastFrame = 1;
-	this->currentFrame = this->firstFrame;
-	this->blendMode = Renderer::BlendMode::ALPHA;
-	this->r = 255;
-	this->g = 255;
-	this->b = 255;
-	this->a = 255;
-	this->collision = nullptr;
-	this->colPixelData = nullptr;
-	this->colSprite = nullptr;
-	this->collided = false;
+	m_image = image;
+	m_x = 0;
+	m_y = 0;
+	m_z = 0;
+	m_colx = 0;
+	m_coly = 0;
+	m_colwidth = 0;
+	m_colheight = 0;
+	m_angle = 0;
+	m_scalex = 1;
+	m_scaley = 1;
+	m_radius = 1;
+	m_animFPS = 0;
+	m_firstFrame = 0;
+	m_lastFrame = 1;
+	m_currentFrame = m_firstFrame;
+	m_blendMode = Renderer::BlendMode::ALPHA;
+	m_r = 255;
+	m_g = 255;
+	m_b = 255;
+	m_a = 255;
+	m_collision = nullptr;
+	m_colPixelData = nullptr;
+	m_colSprite = nullptr;
+	m_collided = false;
 
-	this->rotating = false;
-	this->toAngle = 0;
-	this->rotatingSpeed = 0;
-	this->degreesToRotate = 0;
+	m_rotating = false;
+	m_toAngle = 0;
+	m_rotatingSpeed = 0;
+	m_degreesToRotate = 0;
 
-	this->moving = false;
-	this->toX = this->x;
-	this->toY = this->y;
-	this->movingSpeedX = 0;
-	this->movingSpeedY = 0;
-	this->prevX = this->x;
-	this->prevY = this->y;
+	m_moving = false;
+	m_toX = m_x;
+	m_toY = m_y;
+	m_movingSpeedX = 0;
+	m_movingSpeedY = 0;
+	m_prevX = m_x;
+	m_prevY = m_y;
 
-	this->userData = nullptr;
+	m_userData = nullptr;
 }
 
 Sprite::~Sprite() {
@@ -73,88 +73,88 @@ bool Sprite::CheckCollision(const Map* map) {
 void Sprite::RotateTo(int32 angle, double speed) {
 	double wrapAngle = WrapValue(angle, 360);
 
-	if (WrapValue(angle, 360) == WrapValue(this->angle, 360) || speed == 0)
-		this->rotating = false;
+	if (WrapValue(angle, 360) == WrapValue(m_angle, 360) || speed == 0)
+		m_rotating = false;
 	else {
-		this->rotating = true;
-		double cw = WrapValue(this->angle - wrapAngle, 360);
-		double ccw = WrapValue(wrapAngle - this->angle, 360);
+		m_rotating = true;
+		double cw = WrapValue(m_angle - wrapAngle, 360);
+		double ccw = WrapValue(wrapAngle - m_angle, 360);
 		if (min(ccw, cw) == ccw) {
-			this->degreesToRotate = ccw;
-			this->toAngle = wrapAngle;
-			this->rotatingSpeed = abs(speed);
+			m_degreesToRotate = ccw;
+			m_toAngle = wrapAngle;
+			m_rotatingSpeed = abs(speed);
 		} else {
-			this->degreesToRotate = cw;
-			this->toAngle = wrapAngle;
-			this->rotatingSpeed = -abs(speed);
+			m_degreesToRotate = cw;
+			m_toAngle = wrapAngle;
+			m_rotatingSpeed = -abs(speed);
 		}
 	}
 }
 
 void Sprite::MoveTo(double x, double y, double speed) {
-	if (x == round(this->x) && y == round(this->y) || speed == 0) {
-		this->moving = false;
+	if (x == round(m_x) && y == round(m_y) || speed == 0) {
+		m_moving = false;
 	} else {
-		this->toX = x;
-		this->toY = y;
-		this->moving = true;
-		double time = sqrt(pow(this->toX - this->x, 2) + pow(this->toY - this->y, 2)) / speed;
-		this->movingSpeedX = (this->toX - this->x) / time;
-		this->movingSpeedY = (this->toY - this->y) / time;
+		m_toX = x;
+		m_toY = y;
+		m_moving = true;
+		double time = sqrt(pow(m_toX - m_x, 2) + pow(m_toY - m_y, 2)) / speed;
+		m_movingSpeedX = (m_toX - m_x) / time;
+		m_movingSpeedY = (m_toY - m_y) / time;
 	}
 }
 
 void Sprite::Update(double elapsed, const Map* map) {
 	// Informacion inicial de colision
-	colSprite = NULL;
-	collided = false;
+	m_colSprite = NULL;
+	m_collided = false;
 
-	this->currentFrame += this->animFPS * elapsed;
+	m_currentFrame += m_animFPS * elapsed;
 	
-	if (this->currentFrame >= this->lastFrame) {
-		this->currentFrame = this->firstFrame;
+	if (m_currentFrame >= m_lastFrame) {
+		m_currentFrame = m_firstFrame;
 	}
 
-	if (this->currentFrame < this->firstFrame) {
-		this->currentFrame = this->lastFrame;
+	if (m_currentFrame < m_firstFrame) {
+		m_currentFrame = m_lastFrame;
 	}
 
 	//rotation update
-	if (this->rotating == true) {
-		double r = rotatingSpeed * elapsed;
-		degreesToRotate -= abs(r);
-		SetAngle(this->GetAngle() + r);
+	if (m_rotating == true) {
+		double r = m_rotatingSpeed * elapsed;
+		m_degreesToRotate -= abs(r);
+		SetAngle(GetAngle() + r);
 
-		if (this->degreesToRotate <= 0) {
-			this->rotating = false;
-			SetAngle(toAngle);
+		if (m_degreesToRotate <= 0) {
+			m_rotating = false;
+			SetAngle(m_toAngle);
 		}
 	}
 
 	//move update
-	if (this->moving == true) {
-		double moveX = this->x + (this->movingSpeedX * elapsed);
-		double moveY = this->y + (this->movingSpeedY * elapsed);
-		this->SetPosition(moveX, moveY);
+	if (m_moving == true) {
+		double moveX = m_x + (m_movingSpeedX * elapsed);
+		double moveY = m_y + (m_movingSpeedY * elapsed);
+		SetPosition(moveX, moveY);
 
-		if (this->movingSpeedX <= 0 && this->x <= this->toX) {
-			this->moving = false;
-			this->x = this->toX;
-			this->y = this->toY;
-		} else if (this->movingSpeedX >= 0 && this->x >= this->toX) {
-			this->moving = false;
-			this->x = this->toX;
-			this->y = this->toY;
+		if (m_movingSpeedX <= 0 && m_x <= m_toX) {
+			m_moving = false;
+			m_x = m_toX;
+			m_y = m_toY;
+		} else if (m_movingSpeedX >= 0 && m_x >= m_toX) {
+			m_moving = false;
+			m_x = m_toX;
+			m_y = m_toY;
 		}
 
-		if (this->movingSpeedY <= 0 && this->y <= this->toY) {
-			this->moving = false;
-			this->x = this->toX;
-			this->y = this->toY;
-		} else if (this->movingSpeedY >= 0 && this->y >= this->toY) {
-			this->moving = false;
-			this->x = this->toX;
-			this->y = this->toY;
+		if (m_movingSpeedY <= 0 && m_y <= m_toY) {
+			m_moving = false;
+			m_x = m_toX;
+			m_y = m_toY;
+		} else if (m_movingSpeedY >= 0 && m_y >= m_toY) {
+			m_moving = false;
+			m_x = m_toX;
+			m_y = m_toY;
 		}
 	}
 
@@ -163,11 +163,11 @@ void Sprite::Update(double elapsed, const Map* map) {
 }
 
 void Sprite::Render() const {
-	Renderer::Instance().SetBlendMode(this->blendMode);
+	Renderer::Instance().SetBlendMode(m_blendMode);
 
-	Renderer::Instance().SetColor(this->r, this->g, this->b, this->a);
+	Renderer::Instance().SetColor(m_r, m_g, m_b, m_a);
 
-	Renderer::Instance().DrawImage(this->image, this->x, this->y, this->currentFrame, this->image->GetWidth() * scalex, this->image->GetHeight() * scaley, this->angle);
+	Renderer::Instance().DrawImage(m_image, m_x, m_y, m_currentFrame, m_image->GetWidth() * m_scalex, m_image->GetHeight() * m_scaley, m_angle);
 }
 
 void Sprite::UpdateCollisionBox() {
