@@ -1,5 +1,6 @@
 #include <ctime>
 
+#include "../include/affector.h"
 #include "../include/array.h"
 #include "../include/emitter.h"
 #include "../include/particle.h"
@@ -21,6 +22,10 @@ void Emitter::Start() {
 
 void Emitter::Stop() {
 	m_emitting = false;
+}
+
+void Emitter::AddAffector(const Affector &affector) {
+	m_affectors.Add(affector);
 }
 
 void Emitter::Update(double elapsed) {
@@ -51,7 +56,15 @@ void Emitter::Update(double elapsed) {
 	}
 	//update
 	for (unsigned short int i = 0; i < m_particles.Size(); i++) {
-		if (m_particles[i].GetAlpha() <= 0 || m_particles[i].GetLifeTime() <= 0) {
+		if (!m_particles[i].Affected()) {
+			for (unsigned short int j = 0; j < m_affectors.Size(); j++) {
+				if (m_particles[i].GetX() >= m_affectors[j].GetX0() && m_particles[i].GetX() <= m_affectors[j].GetX1()
+					&& m_particles[i].GetY() >= m_affectors[j].GetY0() && m_particles[i].GetY() <= m_affectors[j].GetY1()) {
+					m_affectors[j].ChangeParticleProperties(m_particles[i]);
+				}
+			}
+		}
+		if (m_particles[i].GetAlpha() == 0 || m_particles[i].GetLifeTime() <= 0) {
 			m_particles.RemoveAt(i);
 		} else
 			m_particles[i].Update(elapsed);

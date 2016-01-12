@@ -33,6 +33,23 @@ int main(int argc, char* argv[]) {
 	em->SetMinColor(0, 0, 0);
 	em->SetMaxColor(255, 255, 255);
 
+	Affector affectorL = Affector(0, 0, Screen::Instance().GetWidth() / 3, Screen::Instance().GetHeight());
+	affectorL.SetMinColor(0, 0, 0);
+	affectorL.SetMaxColor(255, 255, 0);
+	affectorL.SetAngularVelocity(0, 360);
+	affectorL.SetVelocityX(-128, 128);
+	affectorL.SetVelocityY(-128, 128);
+
+	Affector affectorR = Affector(Screen::Instance().GetWidth() * 2 / 3, 0, Screen::Instance().GetWidth(), Screen::Instance().GetHeight());
+	affectorR.SetMinColor(0, 0, 0);
+	affectorR.SetMaxColor(0, 255, 255);
+	affectorR.SetAngularVelocity(360, 720);
+	affectorR.SetVelocityX(-128, 128);
+	affectorR.SetVelocityY(-128, 128);
+
+	em->AddAffector(affectorL);
+	em->AddAffector(affectorR);
+
 	double keyDelay = 0;
 
 	while (Screen::Instance().IsOpened() && !Screen::Instance().KeyPressed(GLFW_KEY_ESC)) {
@@ -57,7 +74,8 @@ int main(int argc, char* argv[]) {
 		Screen::Instance().Refresh();
 	}
 	
-	//image
+	delete mainScene;
+
 	ResourceManager::Instance().FreeResources();
 
 	return 0;

@@ -1,12 +1,7 @@
 #include "..\include\camera.h"
 #include "..\include\screen.h"
 
-#define CAMERA_RATE 2
-
 Camera::Camera() {
-	m_boundx0 = m_boundy0 = 0;
-	m_boundx1 = Screen::Instance().GetWidth();
-	m_boundy1 = Screen::Instance().GetHeight();
 	m_x = m_y = 0;
 	m_followingSprite = nullptr;
 }
@@ -54,21 +49,26 @@ void Camera::FollowSprite(Sprite * sprite) {
 
 void Camera::Update() {
 	if (m_followingSprite != nullptr) {
-		m_x = m_followingSprite->GetX() - Screen::Instance().GetWidth() / 2;
-		if (m_x < m_boundx0) {
-			m_x = m_boundx0;
-		} else if (m_x + Screen::Instance().GetWidth() > m_boundx1) {
-			m_x = m_boundx1 - Screen::Instance().GetWidth();
+		if (HasBounds()) {
+			m_x = m_followingSprite->GetX() - Screen::Instance().GetWidth() / 2;
+			if (m_x < m_boundx0) {
+				m_x = m_boundx0;
+			} else if (m_x + Screen::Instance().GetWidth() > m_boundx1) {
+				m_x = m_boundx1 - Screen::Instance().GetWidth();
+			} else {
+				m_x = m_followingSprite->GetX() - Screen::Instance().GetWidth() / 2;
+			}
+
+			m_y = m_followingSprite->GetY() - Screen::Instance().GetHeight() / 2;
+			if (m_y < m_boundy0) {
+				m_y = m_boundy0;
+			} else if (m_y + Screen::Instance().GetHeight() > m_boundy1) {
+				m_y = m_boundy1 - Screen::Instance().GetHeight();
+			} else {
+				m_y = m_followingSprite->GetY() - Screen::Instance().GetHeight() / 2;
+			}
 		} else {
 			m_x = m_followingSprite->GetX() - Screen::Instance().GetWidth() / 2;
-		}
-
-		m_y = m_followingSprite->GetY() - Screen::Instance().GetHeight() / 2;
-		if (m_y < m_boundy0) {
-			m_y = m_boundy0;
-		} else if (m_y + Screen::Instance().GetHeight() > m_boundy1) {
-			m_y = m_boundy1 - Screen::Instance().GetHeight();
-		} else {
 			m_y = m_followingSprite->GetY() - Screen::Instance().GetHeight() / 2;
 		}
 	}

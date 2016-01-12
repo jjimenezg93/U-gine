@@ -4,6 +4,7 @@
 #include "sprite.h"
 #include "types.h"
 
+class Affector;
 class Particle;
 
 class Emitter {
@@ -29,6 +30,8 @@ public:
 	virtual void Stop();
 	virtual bool IsEmitting() const { return m_emitting; }
 
+	virtual void AddAffector(const Affector &affector);
+
 	virtual void Update(double elapsed);
 	virtual void Render() const;
 private:
@@ -46,6 +49,7 @@ private:
 	Renderer::BlendMode m_blendMode;
 	bool m_emitting;
 	Array<Particle> m_particles;
+	Array<Affector> m_affectors;
 };
 
 #endif //!UGINE_EMITTER_H

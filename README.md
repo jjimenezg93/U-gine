@@ -11,4 +11,4 @@ Skeleton of the engine is given by 2D-programming teacher, and different modules
 ___
 
 ###Version
-Project is currently at **v0.8**
+Project is currently at **v0.8.5**

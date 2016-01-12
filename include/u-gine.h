@@ -1,6 +1,7 @@
 #ifndef UGINE_MAIN_H
 #define UGINE_MAIN_H
 
+#include "affector.h"
 #include "array.h"
 #include "bone.h"
 #include "camera.h"
@@ -15,7 +16,7 @@
 //#include "map.h"
 //#include "mapscene.h"
 #include "math.h"
-//#include "parallaxscene.h"
+#include "parallaxscene.h"
 #include "particle.h"
 #include "renderer.h"
 #include "resourcemanager.h"
