@@ -14,40 +14,91 @@ float genRandomF(double min, double max) {
 int main(int argc, char* argv[]) {
 	Screen::Instance().Open(800, 600, false);
 
-	Image * starImage = ResourceManager::Instance().LoadImage("data/star.png");
-	starImage->SetMidHandle();
+	//IMAGES
+	Image * mouseRectImg = ResourceManager::Instance().LoadImage("data/rect.png");
+	mouseRectImg->SetMidHandle();
 
+	Image * mouseCircImg = ResourceManager::Instance().LoadImage("data/circle.png");
+	mouseCircImg->SetMidHandle();
+
+	Image * boxImg = ResourceManager::Instance().LoadImage("data/box.jpg");
+	boxImg->SetMidHandle();
+
+	Image * ballImg = ResourceManager::Instance().LoadImage("data/ball.png");
+	ballImg->SetMidHandle();
+
+	Image * alienImg = ResourceManager::Instance().LoadImage("data/alien.png");
+	alienImg->SetMidHandle();
+
+	CollisionPixelData * alienPixelData = ResourceManager::Instance().LoadCollisionPixelData("data/aliencol.png");
+	CollisionPixelData * alienPixelPlayerData = ResourceManager::Instance().LoadCollisionPixelData("data/alienplayercol.png");
+
+	//SCENE
 	Scene * mainScene = new Scene();
 
-	Emitter * em = mainScene->CreateEmitter(starImage, true);
+	//SPRITES
+	Sprite * ballSprt = mainScene->CreateSprite(ballImg);
+	ballSprt->SetPosition(Screen::Instance().GetWidth() / 4, Screen::Instance().GetHeight() / 4);
+	ballSprt->SetCollision(Sprite::CollisionMode::COLLISION_CIRCLE);
+	ballSprt->SetColor(255, 255, 255, 255);
+	ballSprt->SetBlendMode(Renderer::BlendMode::ALPHA);
 
-	Sprite * sprtStar = mainScene->CreateSprite(starImage, Scene::LAYER_FRONT);
-	sprtStar->SetColor(255, 0, 0, 255);
-	sprtStar->SetBlendMode(Renderer::BlendMode::ALPHA);
-	
-	em->SetRate(500, 1000);
-	em->SetVelocityX(-128, 128);
-	em->SetVelocityY(-128, 128);
-	em->SetAngularVelocity(0, 360);
-	em->SetLifetime(1, 2);
-	em->SetMinColor(0, 0, 0);
-	em->SetMaxColor(255, 255, 255);
+	Sprite * boxSprt = mainScene->CreateSprite(boxImg);
+	boxSprt->SetPosition(Screen::Instance().GetWidth() * 3/4, Screen::Instance().GetHeight() *3/4);
+	boxSprt->SetCollision(Sprite::CollisionMode::COLLISION_RECT);
+	boxSprt->SetColor(255, 255, 255, 255);
+	boxSprt->SetBlendMode(Renderer::BlendMode::ALPHA);
+
+	Sprite * alienSprt = mainScene->CreateSprite(alienImg);
+	alienSprt->SetPosition(Screen::Instance().GetWidth() / 4, Screen::Instance().GetHeight() * 3 / 4);
+	alienSprt->SetCollisionPixelData(alienPixelData);
+	alienSprt->SetCollision(Sprite::CollisionMode::COLLISION_PIXEL);
+	alienSprt->SetColor(255, 255, 255, 255);
+	alienSprt->SetBlendMode(Renderer::BlendMode::ALPHA);
+
+	Sprite * mouseSprt = mainScene->CreateSprite(mouseCircImg);
+	mouseSprt->SetBlendMode(Renderer::BlendMode::ALPHA);
+	mouseSprt->SetCollision(Sprite::CollisionMode::COLLISION_CIRCLE);
+	mouseSprt->SetColor(255, 255, 255, 255);
 
 	double keyDelay = 0;
 
 	while (Screen::Instance().IsOpened() && !Screen::Instance().KeyPressed(GLFW_KEY_ESC)) {
 		Renderer::Instance().Clear();
 
-		if (Screen::Instance().MouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT) && !em->IsEmitting() && keyDelay >= 0.5) {
-			em->Start();
+		if (Screen::Instance().MouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT) &&  keyDelay >= 0.5) {
+			mouseSprt->SetImage(mouseCircImg);
+			mouseSprt->SetCollision(Sprite::CollisionMode::COLLISION_CIRCLE);
 			keyDelay = 0;
-		} else if (Screen::Instance().MouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT) && em->IsEmitting() && keyDelay >= 0.5) {
-			em->Stop();
+		} else if (Screen::Instance().MouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT) && keyDelay >= 0.5) {
+			mouseSprt->SetCollision(Sprite::CollisionMode::COLLISION_RECT);
+			mouseSprt->SetImage(mouseRectImg);
+			keyDelay = 0;
+		} else if (Screen::Instance().MouseButtonPressed(GLFW_MOUSE_BUTTON_MIDDLE) && keyDelay >= 0.5) {
+			//mouseSprt->SetCollisionPixelData(alienPixelData);
+			mouseSprt->SetCollisionPixelData(alienPixelPlayerData);
+			mouseSprt->SetCollision(Sprite::CollisionMode::COLLISION_PIXEL);
+			mouseSprt->SetImage(alienImg);
 			keyDelay = 0;
 		}
 
-		sprtStar->SetPosition(Screen::Instance().GetMouseX(), Screen::Instance().GetMouseY());
-		em->SetPosition(Screen::Instance().GetMouseX(), Screen::Instance().GetMouseY());
+		if (mouseSprt->CheckCollision(ballSprt)) {
+			mouseSprt->SetColor(255, 0, 0, 255);
+			ballSprt->SetColor(255, 0, 0, 255);
+		} else if (mouseSprt->CheckCollision(boxSprt)) {
+			mouseSprt->SetColor(255, 0, 0, 255);
+			boxSprt->SetColor(255, 0, 0, 255);
+		} else if (mouseSprt->CheckCollision(alienSprt)) {
+			mouseSprt->SetColor(255, 0, 0, 255);
+			alienSprt->SetColor(255, 0, 0, 255);
+		} else {
+			mouseSprt->SetColor(255, 255, 255, 255);
+			ballSprt->SetColor(255, 255, 255, 255);
+			boxSprt->SetColor(255, 255, 255, 255);
+			alienSprt->SetColor(255, 255, 255, 255);
+		}
+
+		mouseSprt->SetPosition(Screen::Instance().GetMouseX(), Screen::Instance().GetMouseY());
 
 		mainScene->Update(Screen::Instance().ElapsedTime());
 		mainScene->Render();
@@ -57,7 +108,8 @@ int main(int argc, char* argv[]) {
 		Screen::Instance().Refresh();
 	}
 	
-	//image
+	delete mainScene;
+
 	ResourceManager::Instance().FreeResources();
 
 	return 0;

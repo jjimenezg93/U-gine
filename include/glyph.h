@@ -3,6 +3,9 @@
 
 class Glyph {
 public:
+	Glyph() {}
+	Glyph(double ox, double oy, double ex, double ey);
+
 	virtual float GetOrigX() const { return m_origX; }
 	virtual float GetOrigY() const { return m_origY; }
 	virtual void SetOrigX(float x) { m_origX = x; }

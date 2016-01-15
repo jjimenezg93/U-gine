@@ -78,22 +78,22 @@
 //    - GIF always returns *comp=4
 //
 // Basic usage (see HDR discussion below):
-//    int x,y,n;
-//    unsigned char *data = stbi_load(filename, &x, &y, &n, 0);
+//    int m_x,m_y,n;
+//    unsigned char *data = stbi_load(filename, &m_x, &m_y, &n, 0);
 //    // ... process data if not NULL ... 
-//    // ... x = width, y = height, n = # 8-bit components per pixel ...
+//    // ... m_x = width, m_y = height, n = # 8-bit components per pixel ...
 //    // ... replace '0' with '1'..'4' to force that many components per pixel
 //    // ... but 'n' will always be the number that it would have been if you said 0
 //    stbi_image_free(data)
 //
 // Standard parameters:
-//    int *x       -- outputs image width in pixels
-//    int *y       -- outputs image height in pixels
+//    int *m_x       -- outputs image width in pixels
+//    int *m_y       -- outputs image height in pixels
 //    int *comp    -- outputs # of image components in image file
 //    int req_comp -- if non-zero, # of image components requested in result
 //
 // The return value from an image loader is an 'unsigned char *' which points
-// to the pixel data. The pixel data consists of *y scanlines of *x pixels,
+// to the pixel data. The pixel data consists of *m_y scanlines of *m_x pixels,
 // with each pixel consisting of N interleaved 8-bit components; the first
 // pixel pointed to is top-left-most in the image. There is no padding between
 // image scanlines or between pixels, regardless of format. The number of
@@ -112,7 +112,7 @@
 //       4           red, green, blue, alpha
 //
 // If image loading fails for any reason, the return value will be NULL,
-// and *x, *y, *comp will be unchanged. The function stbi_failure_reason()
+// and *m_x, *m_y, *comp will be unchanged. The function stbi_failure_reason()
 // can be queried for an extremely brief, end-user unfriendly explanation
 // of why the load failed. Define STBI_NO_FAILURE_STRINGS to avoid
 // compiling these strings at all, and STBI_FAILURE_USERMSG to get slightly
@@ -155,7 +155,7 @@
 // Additionally, there is a new, parallel interface for loading files as
 // (linear) floats to preserve the full dynamic range:
 //
-//    float *data = stbi_loadf(filename, &x, &y, &n, 0);
+//    float *data = stbi_loadf(filename, &m_x, &m_y, &n, 0);
 // 
 // If you load LDR images through this interface, those images will
 // be promoted to floating point values, run through the inverse of
@@ -306,14 +306,14 @@ extern int   stbi_zlib_decode_noheader_buffer(char *obuffer, int olen, const cha
 #ifdef STBI_SIMD
 typedef void (*stbi_idct_8x8)(stbi_uc *out, int out_stride, short data[64], unsigned short *dequantize);
 // compute an integer IDCT on "input"
-//     input[x] = data[x] * dequantize[x]
+//     input[m_x] = data[m_x] * dequantize[m_x]
 //     write results to 'out': 64 samples, each run of 8 spaced by 'out_stride'
 //                             CLAMP results to 0..255
 typedef void (*stbi_YCbCr_to_RGB_run)(stbi_uc *output, stbi_uc const  *y, stbi_uc const *cb, stbi_uc const *cr, int count, int step);
 // compute a conversion from YCbCr to RGB
 //     'count' pixels
 //     write pixels to 'output'; each pixel is 'step' bytes (either 3 or 4; if 4, write '255' as 4th), order R,G,B
-//     y: Y input channel
+//     m_y: Y input channel
 //     cb: Cb input channel; scale/biased to be 0..255
 //     cr: Cr input channel; scale/biased to be 0..255
 
@@ -926,7 +926,7 @@ static stbi_uc *hdr_to_ldr(float   *data, int x, int y, int comp)
 //
 //    simple implementation
 //      - channel subsampling of at most 2 in each dimension
-//      - doesn't support delayed output of y-dimension
+//      - doesn't support delayed output of m_y-dimension
 //      - simple interface (only one output format: 8-bit interleaved RGB)
 //      - doesn't try to recover corrupt jpegs
 //      - doesn't allow partial loading, loading multiple at once
@@ -3205,8 +3205,8 @@ static int tga_test(stbi *s)
    get16(s);      //   discard palette start
    get16(s);      //   discard palette length
    get8(s);         //   discard bits per palette color entry
-   get16(s);      //   discard x origin
-   get16(s);      //   discard y origin
+   get16(s);      //   discard m_x origin
+   get16(s);      //   discard m_y origin
    if ( get16(s) < 1 ) return 0;      //   test width
    if ( get16(s) < 1 ) return 0;      //   test height
    sz = get8(s);   //   bits per pixel

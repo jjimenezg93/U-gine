@@ -14,7 +14,7 @@ Font::Font(const String &filename) : Image(filename, 16, 16) {
 	m_speedY = 0;
 
 	for (unsigned short int f = 0; f < GetNumFrames(); f++)
-		glyphs.Add(Glyph());
+		glyphs.Add(Glyph(0, 0, GetWidth(), GetHeight()));
 
 	int width32 = 0;
 	int height32 = 0;
@@ -94,6 +94,14 @@ uint32 Font::GetTextHeight(const String & text) const {
 }
 
 void Font::Render(const String & text, double x, double y) const{
+	/* ASCII
+	* 32 = (space)
+	* 48 = 0
+	* 64 = @
+	* 65 = A
+	* 126 = ~		<- last
+	*/
+
 	const char * str = text.ToCString();
 	unsigned short int offset = 0;
 

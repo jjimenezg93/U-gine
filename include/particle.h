@@ -11,6 +11,14 @@ public:
 
 	virtual double GetLifeTime() const { return m_lifetime; }
 
+	virtual void SetVelocityX(double velx) { m_velocityx = velx; }
+	virtual void SetVelocityY(double vely) { m_velocityy = vely; }
+
+	virtual void SetAngularVelocity(double angVel) { m_angularVelocity = angVel; }
+
+	virtual bool Affected() const { return m_affected; }
+	virtual void SetAffected(bool affected) { m_affected = affected; }
+
 	virtual void Update(double elapsed);
 private:
 	double m_velocityx, m_velocityy;
@@ -18,6 +26,7 @@ private:
 	double m_lifetime;
 	double m_initialLifetime;
 	bool m_autofade;
+	bool m_affected;
 };
 
 #endif //!UGINE_PARTICLE_H

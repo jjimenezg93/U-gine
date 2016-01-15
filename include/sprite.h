@@ -21,7 +21,7 @@ public:
 	Sprite(Image* image);
 	virtual ~Sprite();
 
-	virtual void SetImage(Image* image) { m_image = image; }
+	virtual void SetImage(Image* image);
 	virtual const Image* GetImage() const { return m_image; }
 
 	virtual void SetPosition(double x, double y, double z = 0) { m_x = x; m_y = y; m_z = z; }
@@ -31,7 +31,7 @@ public:
 	virtual double GetX() const { return m_x; }
     virtual double GetY() const { return m_y; }
     virtual double GetZ() const { return m_z; }
-	virtual double GetScreenX() const { return GetX(); }		//isometrica, transformadas en coordenadas de pantalla. por ahora getX y getY
+	virtual double GetScreenX() const { return GetX(); }		//isometrica, transformadas en coordenadas de pantalla. por ahora getX m_y getY
     virtual double GetScreenY() const { return GetY(); }
 
 	virtual void SetAngle(double angle) { m_angle = angle; }

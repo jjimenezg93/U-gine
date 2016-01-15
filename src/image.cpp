@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include "../include/renderer.h"
 
-// TAREA: Declarar funciones de stb_image.c
-
 extern "C" {
 	unsigned char *stbi_load(char const *filename, int *x, int *y, int *comp, int req_comp);
 	void stbi_image_free(void *retval_from_stbi_load);
@@ -26,7 +24,7 @@ Image::Image(const String &filename, uint16 hframes, uint16 vframes) {
 
 	int width32 = 0;
 	int height32 = 0;
-	int *ptrComp = NULL;
+	int * ptrComp = NULL;
 
 	uint8 *buffer = stbi_load(filename.ToCString(), &width32, &height32, ptrComp, 4);
 
@@ -45,7 +43,7 @@ Image::Image(const String &filename, uint16 hframes, uint16 vframes) {
 		heightPO2 = static_cast<uint16>(heightPO2);
 
 		//allocating memory for new buffer
-		uint8 *bufferPO2 = (uint8 *)malloc(widthPO2 * heightPO2 * 4);		// * 4 because each pixel needs 32 bits
+		uint8 * bufferPO2 = (uint8 *)malloc(widthPO2 * heightPO2 * 4);		// * 4 because each pixel needs 32 bits
 
 		uint8 * const origBufferPO2pos = bufferPO2;		//ptr to keep reference to the bufferPO2
 		uint8 * const origBufferpos = buffer;

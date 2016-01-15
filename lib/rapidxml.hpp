@@ -1651,7 +1651,7 @@ namespace rapidxml
                             if (src[2] == Ch('x'))
                             {
                                 unsigned long code = 0;
-                                src += 3;   // Skip &#x
+                                src += 3;   // Skip &#m_x
                                 while (1)
                                 {
                                     unsigned char digit = internal::lookup_tables<0>::lookup_digits[static_cast<unsigned char>(*src)];

@@ -42,7 +42,7 @@ void Scene::DeleteEmitter(Emitter* emitter) {
 }
 
 void Scene::Update(double elapsed, Map* map) {
-	// Actualizamos sprites y emitters
+	// Actualizamos sprites m_y emitters
 	for ( int i = 0; i < LAYER_COUNT; i++ ) {
         for ( uint32 j = 0; j < sprites[i].Size(); j++ ) sprites[i][j]->Update(elapsed, map);
         for ( uint32 j = 0; j < emitters[i].Size(); j++ ) emitters[i][j]->Update(elapsed);
