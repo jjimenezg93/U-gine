@@ -1525,7 +1525,7 @@ static int process_frame_header(jpeg *z, int scan)
    Lf = get16(s);         if (Lf < 11) return e("bad SOF len","Corrupt JPEG"); // JPEG
    p  = get8(s);          if (p != 8) return e("only 8-bit","JPEG format not supported: 8-bit only"); // JPEG baseline
    s->img_y = get16(s);   if (s->img_y == 0) return e("no header height", "JPEG format not supported: delayed height"); // Legal, but we don't handle it--but neither does IJG
-   s->img_x = get16(s);   if (s->img_x == 0) return e("0 width","Corrupt JPEG"); // JPEG requires
+   s->img_x = get16(s);   if (s->img_x == 0) return e("0 m_width","Corrupt JPEG"); // JPEG requires
    c = get8(s);
    if (c != 3 && c != 1) return e("bad component count","Corrupt JPEG");    // JFIF requires
    s->img_n = c;

@@ -81,7 +81,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h" />
     <ClInclude Include="..\include\affector.h" />
     <ClInclude Include="..\include\array.h" />
     <ClInclude Include="..\include\bone.h" />
@@ -97,6 +96,8 @@
     <ClInclude Include="..\include\glinclude.h" />
     <ClInclude Include="..\include\glyph.h" />
     <ClInclude Include="..\include\image.h" />
+    <ClInclude Include="..\include\map.h" />
+    <ClInclude Include="..\include\mapscene.h" />
     <ClInclude Include="..\include\math.h" />
     <ClInclude Include="..\include\parallaxscene.h" />
     <ClInclude Include="..\include\particle.h" />
@@ -125,6 +126,8 @@
     <ClCompile Include="..\src\glyph.cpp" />
     <ClCompile Include="..\src\image.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\map.cpp" />
+    <ClCompile Include="..\src\mapscene.cpp" />
     <ClCompile Include="..\src\math.cpp" />
     <ClCompile Include="..\src\parallaxscene.cpp" />
     <ClCompile Include="..\src\particle.cpp" />
