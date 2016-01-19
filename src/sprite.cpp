@@ -76,13 +76,13 @@ void Sprite::SetCollision(CollisionMode mode) {
 		m_collision = nullptr;
 		break;
 	case COLLISION_CIRCLE:
-		m_collision = new CircleCollision(&m_x, &m_y, &m_radius);
+		m_collision = new CircleCollision(&m_colx, &m_coly, &m_radius);
 		break;
 	case COLLISION_RECT:
 		m_collision = new RectCollision(&m_colx, &m_coly, &m_colwidth, &m_colheight);
 		break;
 	case COLLISION_PIXEL:
-		m_collision = new PixelCollision(&m_x, &m_y, m_colPixelData);
+		m_collision = new PixelCollision(&m_colx, &m_coly, m_colPixelData);
 	default:
 		break;
 	}

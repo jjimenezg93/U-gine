@@ -15,21 +15,21 @@ const CollisionManager & CollisionManager::Instance()
 }
 
 bool CollisionManager::CircleToCircle(double x1, double y1, double r1, double x2, double y2, double r2) const {
-	if (Distance(x1, y1, x2, y2) < r1 + r2)
+	if (Distance(x1 + r1, y1 + r1, x2 + r2, y2 + r2) < r1 + r2)
 		return true;
 	else return false;
 }
 
 bool CollisionManager::CircleToPixels(double cx, double cy, double cr, const CollisionPixelData * pixels, double px, double py) const {
-	if (RectsOverlap(cx - (cr/2), cy - (cr / 2), cr * 2, cr * 2, px, py, pixels->GetWidth(), pixels->GetHeight())) {
+	if (RectsOverlap(cx, cy, cr * 2, cr * 2, px, py, pixels->GetWidth(), pixels->GetHeight())) {
 		double overlapX, overlapY, overlapWidth, overlapHeight;
-		OverlappingRect(cx - (cr / 2), cy - (cr / 2), cr * 2, cr * 2, px, py, pixels->GetWidth(), pixels->GetHeight(), &overlapX, &overlapY, &overlapWidth, &overlapHeight);
+		OverlappingRect(cx, cy, cr * 2, cr * 2, px, py, pixels->GetWidth(), pixels->GetHeight(), &overlapX, &overlapY, &overlapWidth, &overlapHeight);
 		double offY = overlapY - py;
 		double offX;
 		while (offY < overlapHeight + overlapY - py) {
 			offX = overlapX - px;
 			while (offX < overlapWidth + overlapX - px) {
-				if (pixels->GetData(offX, offY) && Distance(cx + (cr/2), cy + (cr/2), offX + px, offY + py) <= cr)
+				if (pixels->GetData(offX, offY) && Distance(cx + cr, cy + cr, offX + px, offY + py) <= cr)
 					return true;
 				offX++;
 			}
@@ -40,14 +40,14 @@ bool CollisionManager::CircleToPixels(double cx, double cy, double cr, const Col
 }
 
 bool CollisionManager::CircleToRect(double cx, double cy, double cr, double rx, double ry, double rw, double rh) const {
-	if (PointInRect(cx, cy, rx, ry, rw, rh))
+	if (PointInRect(cx + cr, cy + cr, rx, ry, rw, rh))
 		return true;
 	else {
 		double nearestX;
 		double nearestY;
-		ClosestPointToRect(cx, cy, rx, ry, rw, rh, &nearestX, &nearestY);
+		ClosestPointToRect(cx + cr, cy + cr, rx, ry, rw, rh, &nearestX, &nearestY);
 
-		if (Distance(cx, cy, nearestX, nearestY) <= cr)
+		if (Distance(cx + cr, cy + cr, nearestX, nearestY) <= cr)
 			return true;
 		else
 			return false;
@@ -79,9 +79,9 @@ bool CollisionManager::PixelsToPixels(const CollisionPixelData * p1, double x1, 
 }
 
 bool CollisionManager::PixelsToRect(const CollisionPixelData * pixels, double px, double py, double rx, double ry, double rw, double rh) const {
-	if (RectsOverlap(px, py, pixels->GetWidth(), pixels->GetHeight(), rx + (rw / 2), ry + (rh / 2), rw, rh)) {
+	if (RectsOverlap(px, py, pixels->GetWidth(), pixels->GetHeight(), rx, ry , rw, rh)) {
 		double overlapX, overlapY, overlapWidth, overlapHeight;
-		OverlappingRect(px, py, pixels->GetWidth(), pixels->GetHeight(), rx + (rw / 2), ry + (rh / 2), rw, rh, &overlapX, &overlapY, &overlapWidth, &overlapHeight);
+		OverlappingRect(px, py, pixels->GetWidth(), pixels->GetHeight(), rx, ry, rw, rh, &overlapX, &overlapY, &overlapWidth, &overlapHeight);
 		double offsetY = overlapY - py;
 		double offsetX;
 		while (offsetY < overlapHeight + overlapY - py) {
